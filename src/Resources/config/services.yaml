@@ -10,5 +10,3 @@ services:
     resource: '../../MessageHandler/'
   Tourze\DoctrineAsyncBundle\Service\:
     resource: '../../Service/'
-
-  Yiisoft\Strings\Inflector: ~

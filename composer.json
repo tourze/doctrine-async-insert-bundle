@@ -9,8 +9,7 @@
     "tourze/doctrine-entity-checker-bundle": "0.0.*",
     "tourze/symfony-async-bundle": "0.0.*",
     "psr/log": "^3|^2|^1",
-    "yiisoft/json": "^1.0",
-    "yiisoft/strings": "^2.1"
+    "yiisoft/json": "^1.0"
   },
   "autoload": {
     "psr-4": {
