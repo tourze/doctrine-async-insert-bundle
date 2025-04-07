@@ -5,6 +5,7 @@ namespace Tourze\DoctrineAsyncBundle\Service;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query as OrmQuery;
 use Doctrine\ORM\Query\Parameter as OrmParameter;
+use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Tourze\DoctrineEntityCheckerBundle\Service\EntityChecker;
@@ -66,10 +67,14 @@ class SqlFormatter
 
             // 如果是一个Entity的话，那我们就只关注其中的ID
             if (is_object($val)) {
-                $pkValues = $this->primaryKeyService->getPrimaryKeyValues($val);
-                if (!empty($pkValues)) {
-                    // 一般来讲，doctrine entity 是必须有主键的
-                    $val = array_shift($pkValues);
+                try {
+                    $pkValues = $this->primaryKeyService->getPrimaryKeyValues($val);
+                    if (!empty($pkValues)) {
+                        // 一般来讲，doctrine entity 是必须有主键的
+                        $val = array_shift($pkValues);
+                    }
+                } catch (MappingException $exception) {
+                    // 字段不存在，类不存在的话，这里就会报错，我们不需要处理
                 }
             }
 
