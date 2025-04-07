@@ -11,6 +11,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Tourze\DoctrineAsyncBundle\EventSubscriber\DoctrineCleanSubscriber;
 use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
+use Tourze\DoctrineEntityCheckerBundle\Service\SqlFormatter;
 
 #[Autoconfigure(lazy: true)]
 class DoctrineService
