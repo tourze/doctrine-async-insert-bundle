@@ -15,6 +15,7 @@
     "symfony/framework-bundle": "^6.4",
     "symfony/event-dispatcher": "^6.4",
     "symfony/messenger": "^6.4",
+    "symfony/yaml": "^6.4 || ^7.1",
     "tourze/doctrine-entity-checker-bundle": "0.0.*",
     "tourze/symfony-async-bundle": "0.0.*",
     "psr/log": "^3|^2|^1",
