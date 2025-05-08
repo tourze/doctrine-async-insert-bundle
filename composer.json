@@ -18,8 +18,8 @@
     "symfony/service-contracts": "^3.5",
     "symfony/yaml": "^6.4 || ^7.1",
     "tourze/doctrine-entity-checker-bundle": "~0.0.8",
-    "yiisoft/json": "^1.0",
-    "tourze/symfony-async-bundle": "0.0.*"
+    "tourze/symfony-async-bundle": "0.0.*",
+    "yiisoft/json": "^1.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^2.1",
