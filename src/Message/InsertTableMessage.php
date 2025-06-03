@@ -2,7 +2,7 @@
 
 namespace Tourze\DoctrineAsyncBundle\Message;
 
-use Tourze\Symfony\Async\Message\AsyncMessageInterface;
+use Tourze\AsyncContracts\AsyncMessageInterface;
 
 /**
  * 执行SQL插入任务

@@ -46,7 +46,7 @@ class InsertTableMessageTest extends TestCase
     {
         $message = new InsertTableMessage();
         $this->assertInstanceOf(
-            \Tourze\Symfony\Async\Message\AsyncMessageInterface::class,
+            \Tourze\AsyncContracts\AsyncMessageInterface::class,
             $message
         );
     }
