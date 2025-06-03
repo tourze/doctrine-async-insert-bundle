@@ -21,7 +21,6 @@
     "tourze/async-contracts": "0.0.*",
     "tourze/bundle-dependency": "0.0.*",
     "tourze/doctrine-entity-checker-bundle": "~0.0.8",
-    "tourze/symfony-async-bundle": "0.0.*",
     "yiisoft/json": "^1.0"
   },
   "require-dev": {

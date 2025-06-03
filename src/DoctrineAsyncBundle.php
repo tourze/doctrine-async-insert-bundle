@@ -10,7 +10,7 @@ class DoctrineAsyncBundle extends Bundle implements BundleDependencyInterface
     public static function getBundleDependencies(): array
     {
         return [
-            \Tourze\Symfony\Async\AsyncBundle::class => ['all' => true],
+            \Tourze\DoctrineEntityCheckerBundle\DoctrineEntityCheckerBundle::class => ['all' => true],
         ];
     }
 }
