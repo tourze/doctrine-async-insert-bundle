@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Tourze\DoctrineAsyncInsertBundle\DependencyInjection\DoctrineAsyncInsertExtension;
 use Tourze\DoctrineAsyncInsertBundle\MessageHandler\InsertTableHandler;
-use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
 
 /**
  * DoctrineAsyncExtension 测试类
@@ -28,7 +28,7 @@ class DoctrineAsyncInsertExtensionTest extends TestCase
 
         // 验证服务定义是否正确加载
         $this->assertTrue($this->container->has(InsertTableHandler::class));
-        $this->assertTrue($this->container->has(DoctrineService::class));
+        $this->assertTrue($this->container->has(AsyncInsertService::class));
     }
 
     public function testServiceAutoconfigurationAndAutowiring(): void

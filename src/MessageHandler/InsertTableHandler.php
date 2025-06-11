@@ -6,7 +6,7 @@ use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
-use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
 use Yiisoft\Json\Json;
 
 /**
@@ -18,7 +18,7 @@ class InsertTableHandler
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly Connection $connection,
-        private readonly DoctrineService $doctrineService,
+        private readonly AsyncInsertService $doctrineService,
     ) {
     }
 

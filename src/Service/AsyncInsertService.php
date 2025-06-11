@@ -13,7 +13,7 @@ use Tourze\DoctrineDirectInsertBundle\Service\DirectInsertService;
 use Tourze\DoctrineEntityCheckerBundle\Service\SqlFormatter;
 
 #[Autoconfigure(lazy: true)]
-class DoctrineService
+class AsyncInsertService
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 use Tourze\DoctrineAsyncInsertBundle\MessageHandler\InsertTableHandler;
-use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
 use Yiisoft\Json\Json;
 
 /**
@@ -18,14 +18,14 @@ class InsertTableHandlerTest extends TestCase
 {
     private MockObject|LoggerInterface $logger;
     private MockObject|Connection $connection;
-    private MockObject|DoctrineService $doctrineService;
+    private MockObject|AsyncInsertService $doctrineService;
     private InsertTableHandler $handler;
 
     protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->connection = $this->createMock(Connection::class);
-        $this->doctrineService = $this->createMock(DoctrineService::class);
+        $this->doctrineService = $this->createMock(AsyncInsertService::class);
 
         $this->handler = new InsertTableHandler(
             $this->logger,
