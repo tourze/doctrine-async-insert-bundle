@@ -1,6 +1,6 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Message;
+namespace Tourze\DoctrineAsyncInsertBundle\Message;
 
 use Tourze\AsyncContracts\AsyncMessageInterface;
 

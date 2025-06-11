@@ -1,12 +1,12 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\MessageHandler;
+namespace Tourze\DoctrineAsyncInsertBundle\MessageHandler;
 
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
-use Tourze\DoctrineAsyncBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
 use Yiisoft\Json\Json;
 
 /**

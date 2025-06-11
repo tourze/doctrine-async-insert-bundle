@@ -1,5 +1,5 @@
 {
-  "name": "tourze/doctrine-async-bundle",
+  "name": "tourze/doctrine-async-insert-bundle",
   "description": "Doctrine Async Bundle",
   "license": "MIT",
   "require": {
@@ -30,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Tourze\\DoctrineAsyncBundle\\": "src"
+      "Tourze\\DoctrineAsyncInsertBundle\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tourze\\DoctrineAsyncBundle\\Tests\\": "tests"
+      "Tourze\\DoctrineAsyncInsertBundle\\Tests\\": "tests"
     }
   }
 }

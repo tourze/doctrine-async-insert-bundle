@@ -1,14 +1,14 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Tests\MessageHandler;
+namespace Tourze\DoctrineAsyncInsertBundle\Tests\MessageHandler;
 
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
-use Tourze\DoctrineAsyncBundle\MessageHandler\InsertTableHandler;
-use Tourze\DoctrineAsyncBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\MessageHandler\InsertTableHandler;
+use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
 use Yiisoft\Json\Json;
 
 /**

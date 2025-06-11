@@ -1,9 +1,9 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Tests\Message;
+namespace Tourze\DoctrineAsyncInsertBundle\Tests\Message;
 
 use PHPUnit\Framework\TestCase;
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 
 /**
  * InsertTableMessage 测试类

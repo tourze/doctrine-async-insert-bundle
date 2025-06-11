@@ -1,6 +1,6 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Service;
+namespace Tourze\DoctrineAsyncInsertBundle\Service;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,8 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
-use Tourze\DoctrineAsyncBundle\EventSubscriber\DoctrineCleanSubscriber;
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 use Tourze\DoctrineDirectInsertBundle\Service\DirectInsertService;
 use Tourze\DoctrineEntityCheckerBundle\Service\SqlFormatter;
 
@@ -21,7 +20,6 @@ class DoctrineService
         private readonly SqlFormatter $sqlFormatter,
         private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
-        private readonly DoctrineCleanSubscriber $doctrineCleanSubscriber,
         private readonly DirectInsertService $directInsertService,
     )
     {
@@ -75,7 +73,6 @@ class DoctrineService
                     'exception' => $exception,
                     'object' => $object,
                 ]);
-                $this->doctrineCleanSubscriber->addTableRecord($tableName, $params);
             }
         }
     }

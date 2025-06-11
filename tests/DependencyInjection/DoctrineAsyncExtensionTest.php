@@ -1,25 +1,24 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Tests\DependencyInjection;
+namespace Tourze\DoctrineAsyncInsertBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Tourze\DoctrineAsyncBundle\DependencyInjection\DoctrineAsyncExtension;
-use Tourze\DoctrineAsyncBundle\EventSubscriber\DoctrineCleanSubscriber;
-use Tourze\DoctrineAsyncBundle\MessageHandler\InsertTableHandler;
-use Tourze\DoctrineAsyncBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\DependencyInjection\DoctrineAsyncInsertExtension;
+use Tourze\DoctrineAsyncInsertBundle\MessageHandler\InsertTableHandler;
+use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
 
 /**
  * DoctrineAsyncExtension 测试类
  */
 class DoctrineAsyncExtensionTest extends TestCase
 {
-    private DoctrineAsyncExtension $extension;
+    private DoctrineAsyncInsertExtension $extension;
     private ContainerBuilder $container;
 
     protected function setUp(): void
     {
-        $this->extension = new DoctrineAsyncExtension();
+        $this->extension = new DoctrineAsyncInsertExtension();
         $this->container = new ContainerBuilder();
     }
 
@@ -28,7 +27,6 @@ class DoctrineAsyncExtensionTest extends TestCase
         $this->extension->load([], $this->container);
 
         // 验证服务定义是否正确加载
-        $this->assertTrue($this->container->has(DoctrineCleanSubscriber::class));
         $this->assertTrue($this->container->has(InsertTableHandler::class));
         $this->assertTrue($this->container->has(DoctrineService::class));
     }

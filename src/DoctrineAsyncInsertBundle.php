@@ -1,13 +1,13 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle;
+namespace Tourze\DoctrineAsyncInsertBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
 use Tourze\DoctrineEntityCheckerBundle\DoctrineEntityCheckerBundle;
 
-class DoctrineAsyncBundle extends Bundle implements BundleDependencyInterface
+class DoctrineAsyncInsertBundle extends Bundle implements BundleDependencyInterface
 {
     public static function getBundleDependencies(): array
     {

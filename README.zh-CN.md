@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-[![Latest Version](https://img.shields.io/packagist/v/tourze/doctrine-async-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/doctrine-async-bundle)
+[![Latest Version](https://img.shields.io/packagist/v/tourze/doctrine-async-insert-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/doctrine-async-insert-bundle)
 
 一个基于 Symfony Messenger 组件实现的 Doctrine DBAL 异步数据库操作包。
 
@@ -17,7 +17,7 @@
 ## 安装
 
 ```bash
-composer require tourze/doctrine-async-bundle
+composer require tourze/doctrine-async-insert-bundle
 ```
 
 ## 快速开始
@@ -25,7 +25,7 @@ composer require tourze/doctrine-async-bundle
 ```php
 <?php
 
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 
 // 创建插入消息
 $message = new InsertTableMessage();

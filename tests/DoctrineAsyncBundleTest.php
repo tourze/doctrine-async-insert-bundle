@@ -1,19 +1,19 @@
 <?php
 
-namespace Tourze\DoctrineAsyncBundle\Tests;
+namespace Tourze\DoctrineAsyncInsertBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Tourze\DoctrineAsyncBundle\DoctrineAsyncBundle;
+use Tourze\DoctrineAsyncInsertBundle\DoctrineAsyncInsertBundle;
 
 /**
- * DoctrineAsyncBundle 测试类
+ * DoctrineAsyncInsertBundle 测试类
  */
-class DoctrineAsyncBundleTest extends TestCase
+class DoctrineAsyncInsertBundleTest extends TestCase
 {
     public function testBundleInheritance(): void
     {
-        $bundle = new DoctrineAsyncBundle();
+        $bundle = new DoctrineAsyncInsertBundle();
 
         $this->assertInstanceOf(Bundle::class, $bundle);
     }

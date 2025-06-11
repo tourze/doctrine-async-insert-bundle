@@ -1,6 +1,6 @@
 # Doctrine Async Bundle
 
-[![Latest Version](https://img.shields.io/packagist/v/tourze/doctrine-async-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/doctrine-async-bundle)
+[![Latest Version](https://img.shields.io/packagist/v/tourze/doctrine-async-insert-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/doctrine-async-insert-bundle)
 
 A Symfony bundle that provides asynchronous database operations for Doctrine DBAL, built on top of Symfony Messenger component.
 
@@ -15,7 +15,7 @@ A Symfony bundle that provides asynchronous database operations for Doctrine DBA
 ## Installation
 
 ```bash
-composer require tourze/doctrine-async-bundle
+composer require tourze/doctrine-async-insert-bundle
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ composer require tourze/doctrine-async-bundle
 ```php
 <?php
 
-use Tourze\DoctrineAsyncBundle\Message\InsertTableMessage;
+use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 
 // Create an insert message
 $message = new InsertTableMessage();
