@@ -11,7 +11,7 @@ use Tourze\DoctrineAsyncInsertBundle\Service\DoctrineService;
 /**
  * DoctrineAsyncExtension 测试类
  */
-class DoctrineAsyncExtensionTest extends TestCase
+class DoctrineAsyncInsertExtensionTest extends TestCase
 {
     private DoctrineAsyncInsertExtension $extension;
     private ContainerBuilder $container;
