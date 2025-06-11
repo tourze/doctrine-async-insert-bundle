@@ -4,8 +4,6 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  Tourze\DoctrineAsyncInsertBundle\EventSubscriber\:
-    resource: '../../EventSubscriber/'
   Tourze\DoctrineAsyncInsertBundle\MessageHandler\:
     resource: '../../MessageHandler/'
   Tourze\DoctrineAsyncInsertBundle\Service\:
