@@ -62,8 +62,8 @@ class AsyncInsertService
             }
             $this->messageBus->dispatch($message, $stamps);
         } catch (\Throwable $exception) {
-            $this->logger->error('asyncInsert时发生错误，尝试直接插入数据库', [
-                'exception' => $exception,
+            $this->logger->error("asyncInsert时发生错误[{$exception->getMessage()}]，尝试直接插入数据库", [
+                'exception' => strvaL($exception),
                 'object' => $object,
             ]);
             try {
