@@ -91,7 +91,7 @@ class AsyncInsertServiceTest extends KernelTestCase
 
         $this->logger->expects($this->once())
             ->method('error')
-            ->with('asyncInsert时发生错误，尝试直接插入数据库', [
+            ->with('asyncInsert时发生错误[Message bus failed]，尝试直接插入数据库', [
                 'exception' => $exception,
                 'object' => $entity,
             ]);
