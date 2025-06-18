@@ -42,7 +42,6 @@ class InsertTableHandlerIntegrationTest extends KernelTestCase
         ($this->handler)($message);
 
         $result = $this->connection->fetchAssociative('SELECT * FROM test_table WHERE name = ?', ['test-value']);
-        $this->assertIsArray($result);
         $this->assertEquals('test-value', $result['name']);
     }
 

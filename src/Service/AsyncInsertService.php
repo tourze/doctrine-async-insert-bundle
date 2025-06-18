@@ -43,7 +43,7 @@ class AsyncInsertService
      */
     public function asyncInsert(object $object, int $delayMs = 0, bool $allowDuplicate = false): void
     {
-        if ($_ENV['FORCE_REPOSITORY_SYNC_INSERT'] ?? false) {
+        if (($_ENV['FORCE_REPOSITORY_SYNC_INSERT'] ?? false) === true) {
             $this->directInsertService->directInsert($object);
 
             return;
@@ -63,7 +63,7 @@ class AsyncInsertService
             $this->messageBus->dispatch($message, $stamps);
         } catch (\Throwable $exception) {
             $this->logger->error("asyncInsert时发生错误[{$exception->getMessage()}]，尝试直接插入数据库", [
-                'exception' => strvaL($exception),
+                'exception' => strval($exception),
                 'object' => $object,
             ]);
             try {
