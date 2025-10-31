@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineAsyncInsertBundle\Service;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -12,17 +15,17 @@ use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 use Tourze\DoctrineDirectInsertBundle\Service\DirectInsertService;
 use Tourze\DoctrineEntityCheckerBundle\Service\SqlFormatter;
 
-#[Autoconfigure(lazy: true)]
-class AsyncInsertService
+#[Autoconfigure(public: true)]
+#[WithMonologChannel(channel: 'doctrine_async_insert')]
+readonly class AsyncInsertService
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly SqlFormatter $sqlFormatter,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $logger,
-        private readonly DirectInsertService $directInsertService,
-    )
-    {
+        private EntityManagerInterface $entityManager,
+        private SqlFormatter $sqlFormatter,
+        private MessageBusInterface $messageBus,
+        private LoggerInterface $logger,
+        private DirectInsertService $directInsertService,
+    ) {
     }
 
     /**
@@ -33,6 +36,7 @@ class AsyncInsertService
         if ($exception instanceof UniqueConstraintViolationException) {
             return true;
         }
+
         return str_contains($exception->getMessage(), 'Duplicate entry') || str_contains($exception->getMessage(), 'Integrity constraint violation');
     }
 
@@ -43,7 +47,7 @@ class AsyncInsertService
      */
     public function asyncInsert(object $object, int $delayMs = 0, bool $allowDuplicate = false): void
     {
-        if (($_ENV['FORCE_REPOSITORY_SYNC_INSERT'] ?? false) === true) {
+        if ('true' === getenv('FORCE_REPOSITORY_SYNC_INSERT')) {
             $this->directInsertService->directInsert($object);
 
             return;
@@ -61,16 +65,16 @@ class AsyncInsertService
                 $stamps[] = new DelayStamp($delayMs);
             }
             $this->messageBus->dispatch($message, $stamps);
-        } catch (\Throwable $exception) {
-            $this->logger->error("asyncInsert时发生错误[{$exception->getMessage()}]，尝试直接插入数据库", [
-                'exception' => strval($exception),
+        } catch (\Throwable $exception0) {
+            $this->logger->error("asyncInsert时发生错误[{$exception0->getMessage()}]，尝试直接插入数据库", [
+                'exception' => $exception0,
                 'object' => $object,
             ]);
             try {
                 $this->directInsertService->directInsert($object);
-            } catch (\Throwable $exception) {
+            } catch (\Throwable $exception1) {
                 $this->logger->error('asyncInsert时发生错误，尝试请求结束后再继续', [
-                    'exception' => $exception,
+                    'exception' => $exception1,
                     'object' => $object,
                 ]);
             }

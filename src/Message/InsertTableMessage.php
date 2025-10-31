@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineAsyncInsertBundle\Message;
 
 use Tourze\AsyncContracts\AsyncMessageInterface;
@@ -9,13 +11,22 @@ use Tourze\AsyncContracts\AsyncMessageInterface;
  */
 class InsertTableMessage implements AsyncMessageInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $params = [];
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParams(): array
     {
         return $this->params;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function setParams(array $params): void
     {
         $this->params = $params;

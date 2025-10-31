@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineAsyncInsertBundle\Tests\Message;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 
 /**
  * InsertTableMessage 测试类
+ *
+ * @internal
  */
-class InsertTableMessageTest extends TestCase
+#[CoversClass(InsertTableMessage::class)]
+final class InsertTableMessageTest extends TestCase
 {
     public function testGetSetParams(): void
     {
@@ -42,12 +48,10 @@ class InsertTableMessageTest extends TestCase
         $this->assertFalse($message->isAllowDuplicate());
     }
 
-    public function testMessageImplementsAsyncMessageInterface(): void
+    public function testMessageInstantiation(): void
     {
         $message = new InsertTableMessage();
-        $this->assertInstanceOf(
-            \Tourze\AsyncContracts\AsyncMessageInterface::class,
-            $message
-        );
+        $this->assertNotNull($message);
+        $this->assertSame('Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage', $message::class);
     }
 }

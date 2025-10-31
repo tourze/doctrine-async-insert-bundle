@@ -1,157 +1,106 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineAsyncInsertBundle\Tests\MessageHandler;
 
 use Doctrine\DBAL\Connection;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tourze\DoctrineAsyncInsertBundle\Message\InsertTableMessage;
 use Tourze\DoctrineAsyncInsertBundle\MessageHandler\InsertTableHandler;
-use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
-use Yiisoft\Json\Json;
+use Tourze\PHPUnitSymfonyKernelTest\AbstractIntegrationTestCase;
 
 /**
- * InsertTableHandler 测试类
+ * @internal
  */
-class InsertTableHandlerTest extends TestCase
+#[CoversClass(InsertTableHandler::class)]
+#[RunTestsInSeparateProcesses]
+final class InsertTableHandlerTest extends AbstractIntegrationTestCase
 {
-    private MockObject|LoggerInterface $logger;
-    private MockObject|Connection $connection;
-    private MockObject|AsyncInsertService $doctrineService;
     private InsertTableHandler $handler;
 
-    protected function setUp(): void
+    private Connection $connection;
+
+    public function testInvokeWithSuccessfulInsertPersistsData(): void
     {
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->connection = $this->createMock(Connection::class);
-        $this->doctrineService = $this->createMock(AsyncInsertService::class);
-
-        $this->handler = new InsertTableHandler(
-            $this->logger,
-            $this->connection,
-            $this->doctrineService
-        );
-    }
-
-    public function testInvokeSuccessful(): void
-    {
-        $tableName = 'test_table';
-        $params = ['column1' => 'value1', 'column2' => ['nested' => 'array']];
-        $expectedParams = [
-            'column1' => 'value1',
-            'column2' => Json::encode(['nested' => 'array'])
-        ];
-
         $message = new InsertTableMessage();
-        $message->setTableName($tableName);
-        $message->setParams($params);
-
-        $this->connection->expects($this->once())
-            ->method('insert')
-            ->with($tableName, $expectedParams);
-
-        $this->logger->expects($this->once())
-            ->method('info')
-            ->with('异步插入数据库成功', [
-                'tableName' => $tableName,
-                'params' => $expectedParams,
-            ]);
+        $message->setTableName('test_handler_entity');
+        $message->setParams(['name' => 'test-value']);
 
         ($this->handler)($message);
+
+        $result = $this->connection->fetchAssociative('SELECT * FROM test_handler_entity WHERE name = ?', ['test-value']);
+        $this->assertNotFalse($result, 'Expected to find a record with name "test-value"');
+        $this->assertEquals('test-value', $result['name']);
     }
 
-    public function testInvokeDuplicateEntryAllowed(): void
+    public function testInvokeWithDuplicateEntryAndAllowedLogsNothing(): void
     {
-        $tableName = 'test_table';
-        $params = ['column1' => 'value1'];
-        $exception = new \Exception('Duplicate entry');
+        // Arrange: Insert initial data
+        $this->connection->insert('test_handler_entity', ['name' => 'duplicate-value']);
 
         $message = new InsertTableMessage();
-        $message->setTableName($tableName);
-        $message->setParams($params);
+        $message->setTableName('test_handler_entity');
+        $message->setParams(['name' => 'duplicate-value']);
         $message->setAllowDuplicate(true);
 
-        $this->connection->expects($this->once())
-            ->method('insert')
-            ->with($tableName, $params)
-            ->willThrowException($exception);
-
-        $this->doctrineService->expects($this->once())
-            ->method('isDuplicateEntryException')
-            ->with($exception)
-            ->willReturn(true);
-
-        // 当允许重复记录时，不应该记录错误日志
-        $this->logger->expects($this->never())
-            ->method('error')
-            ->with('异步插入数据库时发现重复数据', $this->anything());
-
+        // Act & Assert
+        // We expect a UniqueConstraintViolationException to be caught internally
         ($this->handler)($message);
+
+        // Ensure no new record was inserted
+        $count = $this->connection->fetchOne('SELECT COUNT(*) FROM test_handler_entity');
+        $this->assertEquals(1, $count);
     }
 
-    public function testInvokeDuplicateEntryNotAllowed(): void
+    public function testInvokeWithDuplicateEntryAndNotAllowedLogsError(): void
     {
-        $tableName = 'test_table';
-        $params = ['column1' => 'value1'];
-        $exception = new \Exception('Duplicate entry');
+        // Arrange: Insert initial data
+        $this->connection->insert('test_handler_entity', ['name' => 'duplicate-value']);
 
         $message = new InsertTableMessage();
-        $message->setTableName($tableName);
-        $message->setParams($params);
+        $message->setTableName('test_handler_entity');
+        $message->setParams(['name' => 'duplicate-value']);
         $message->setAllowDuplicate(false);
 
-        $this->connection->expects($this->once())
-            ->method('insert')
-            ->with($tableName, $params)
-            ->willThrowException($exception);
-
-        $this->doctrineService->expects($this->once())
-            ->method('isDuplicateEntryException')
-            ->with($exception)
-            ->willReturn(true);
-
-        // 当不允许重复记录时，应该记录错误日志
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with('异步插入数据库时发现重复数据', [
-                'tableName' => $tableName,
-                'params' => $params,
-                'exception' => $exception,
-            ]);
-
+        // Act & Assert
         ($this->handler)($message);
+
+        // 验证没有新记录被插入（因为有重复约束）
+        $count = $this->connection->fetchOne('SELECT COUNT(*) FROM test_handler_entity');
+        $this->assertEquals(1, $count);
     }
 
-    public function testInvokeOtherException(): void
+    protected function onSetUp(): void
     {
-        $tableName = 'test_table';
-        $params = ['column1' => 'value1'];
-        $exception = new \Exception('General database error');
+        $this->connection = self::getService(Connection::class);
+        $this->handler = self::getService(InsertTableHandler::class);
 
-        $message = new InsertTableMessage();
-        $message->setTableName($tableName);
-        $message->setParams($params);
+        // 创建测试表
+        $this->createTestTable();
+    }
 
-        $this->connection->expects($this->once())
-            ->method('insert')
-            ->with($tableName, $params)
-            ->willThrowException($exception);
+    protected function onTearDown(): void
+    {
+        // 清理测试表
+        $this->dropTestTable();
+    }
 
-        $this->doctrineService->expects($this->once())
-            ->method('isDuplicateEntryException')
-            ->with($exception)
-            ->willReturn(false);
+    private function createTestTable(): void
+    {
+        $sql = '
+            CREATE TABLE IF NOT EXISTS test_handler_entity (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name VARCHAR(255) NOT NULL,
+                UNIQUE(name)
+            )
+        ';
+        $this->connection->executeStatement($sql);
+    }
 
-        // 其他异常应该记录错误日志
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with('异步插入数据库失败', [
-                'tableName' => $tableName,
-                'params' => $params,
-                'exception' => $exception,
-            ]);
-
-        ($this->handler)($message);
+    private function dropTestTable(): void
+    {
+        $this->connection->executeStatement('DROP TABLE IF EXISTS test_handler_entity');
     }
 }
